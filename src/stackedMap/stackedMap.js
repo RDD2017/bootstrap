@@ -9,10 +9,11 @@ angular.module('ui.bootstrap.stackedMap', [])
         var stack = [];
 
         return {
-          add: function(key, value) {
+          add: function(key, value, options) {
             stack.push({
               key: key,
-              value: value
+              value: value,
+              options: options
             });
           },
           get: function(key) {

@@ -80,7 +80,8 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     function keypressListener(e) {
       if (e.which === 27) {
         var last = openedTooltips.top();
-        if (last) {
+        var enableEsc = last.options.enableEsc;
+        if (last && enableEsc) {
           last.value.close();
           last = null;
         }
@@ -146,6 +147,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
             var positionTimeout;
             var adjustmentTimeout;
             var appendToBody = angular.isDefined(options.appendToBody) ? options.appendToBody : false;
+            var enableEsc = !angular.isDefined(attrs[prefix + 'EnableEsc']);
             var triggers = getTriggers(undefined);
             var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
             var ttScope = scope.$new(true);
@@ -334,9 +336,9 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
                 }
               });
 
-              openedTooltips.add(ttScope, {
-                close: hide
-              });
+              openedTooltips.add(ttScope,
+                { close: hide },
+                { enableEsc: enableEsc });
 
               prepObservers();
             }
@@ -348,7 +350,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
 
               if (tooltip) {
                 tooltip.remove();
-                
+
                 tooltip = null;
                 if (adjustmentTimeout) {
                   $timeout.cancel(adjustmentTimeout);
@@ -356,7 +358,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
               }
 
               openedTooltips.remove(ttScope);
-              
+
               if (tooltipLinkedScope) {
                 tooltipLinkedScope.$destroy();
                 tooltipLinkedScope = null;
