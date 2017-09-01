@@ -80,7 +80,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     function keypressListener(e) {
       if (e.which === 27) {
         var last = openedTooltips.top();
-        var enableEsc = last.options.enableEsc;
+        var enableEsc = last ? last.options.enableEsc : true;
         if (last && enableEsc) {
           last.value.close();
           last = null;
